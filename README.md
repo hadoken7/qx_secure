@@ -11,7 +11,7 @@
 - 运行: nohup java -jar qx_secure.jar &
 - 根据情况修改 qx.json 
 - 下载qx_secure.js 到本机，并修改密码，保持qx.json、qx_secure.js内密码相同
-###相关配置
+###qx相关配置
 [general]
 
 resource_parser_url=qx_secure.js

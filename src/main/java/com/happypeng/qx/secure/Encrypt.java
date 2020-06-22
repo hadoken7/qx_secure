@@ -15,7 +15,6 @@ public interface Encrypt {
      * @return
      */
     default String encrypt(String content, String key) {
-        byte[] bytes = Rc4Util.rc4Base(content.getBytes(),key);
-        return Base64.getEncoder().encodeToString(bytes);
+        return Base64.getEncoder().encodeToString(Rc4Util.rc4(content,key).getBytes());
     }
 }

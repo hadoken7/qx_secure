@@ -1,6 +1,6 @@
 package com.happypeng.qx.secure;
 
-import java.io.UnsupportedEncodingException;
+import java.util.Base64;
 
 /**
  * @author Hadoken
@@ -15,11 +15,7 @@ public interface Encrypt {
      * @return
      */
     default String encrypt(String content, String key) {
-        try {
-            return Rc4Util.encryRC4String(content, key, "UTF-8");
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return null;
+        byte[] bytes = Rc4Util.rc4Base(content.getBytes(),key);
+        return Base64.getEncoder().encodeToString(bytes);
     }
 }

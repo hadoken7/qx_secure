@@ -9,9 +9,10 @@
 - 需要vps、java1.8+环境
 - jar包默认使用端口 8080
 - 运行: nohup java -jar qx_secure.jar &
-- 根据情况修改 qx.json 
+- 根据自己情况修改 qx.json 
 - 下载qx_secure.js 到本机，并修改密码，保持qx.json、qx_secure.js内密码相同
 ###qx相关配置
+
 [general]
 
 resource_parser_url=qx_secure.js

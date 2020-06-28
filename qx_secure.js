@@ -244,6 +244,7 @@ function rc4(str, key) {
 var src = $resource.content;
 const obj = JSON.parse(src);
 if (obj.code != 0){
+	$notify("解析节点失败", obj);
 } else {
 	var result = rc4(Base64.atob(obj.data), key);
 	$done({content: result});

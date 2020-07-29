@@ -2,12 +2,14 @@ package com.happypeng.qx.secure;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.http.ParseException;
+import org.apache.http.client.methods.CloseableHttpResponse;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClients;
+import org.apache.http.util.EntityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.springframework.web.client.RestTemplate;
@@ -70,15 +72,32 @@ public class SecureService implements Encrypt {
         }
     }
 
-    private String getContent(String url) {
-        ResponseEntity<String> response =
-                restTemplate.exchange(url, HttpMethod.GET, new HttpEntity<String>(null, null),
-                        String.class);
-        if (response.getStatusCode() == HttpStatus.OK) {
-            return response.getBody();
-        } else {
-            return null;
+    public String getContent(String url) {
+        return get(url);
+    }
+
+    public String get(String url) {
+        String result = "";
+        CloseableHttpClient httpclient = HttpClients.createDefault();
+        try {
+            HttpGet httpget = new HttpGet(url);
+            try (CloseableHttpResponse response = httpclient.execute(httpget)) {
+                org.apache.http.HttpEntity entity = response.getEntity();
+                if (entity != null) {
+                    result = EntityUtils.toString(entity);
+                }
+            }
+        } catch (ParseException | IOException e) {
+            e.printStackTrace();
+        } finally {
+            // 关闭连接,释放资源
+            try {
+                httpclient.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
+        return result;
     }
 
     private String getContentByFile(String filePath) {
